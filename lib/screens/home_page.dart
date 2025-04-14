@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:prevent_rental_fraud/widgets/news_list_builder.dart';
+
 
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+    required this.newsLinks
+  });
+  final List<String> newsLinks;
   @override
   createState() => _HomePageState();
 }
@@ -76,30 +82,9 @@ class _HomePageState extends State<HomePage>{
             Positioned(   //뉴스 컨테이너
               left: screenWidth * 0.06,
               top: screenHeight * 0.22,
-              child: Container(
-                width: 176,
-                height: 77,
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(   //뉴스 컨테이너
-              left: screenWidth * 0.1 + 176,
-              top: screenHeight * 0.22,
-              child: Container(
-                width: 176,
-                height: 77,
-                decoration: ShapeDecoration(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
+              child: NewsListBuilder(
+                newsLinks: widget.newsLinks,
+              )
             ),
             Positioned(
               left: screenWidth,

@@ -5,12 +5,16 @@ import 'package:prevent_rental_fraud/screens/login_page.dart';
 import 'package:prevent_rental_fraud/screens/main_page_view.dart';
 
 void main() {
-  runApp(const MyApp());
+  List<String> newsLinks = ["https://www.naver.com", "https://www.naver.com", "https://www.naver.com", "https://www.naver.com"];
+  runApp(MyApp(newsLinks: newsLinks,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({
+    super.key,
+    required this.newsLinks
+  });
+  final List<String> newsLinks;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
     if(snapshot.hasError) {
       return const Text("Error!!");
     } else if(snapshot.hasData) {
-      return const SafeArea(child: MainPageView());
+      return SafeArea(child: MainPageView(newsLinks: newsLinks,));
     } else {
       return const SafeArea(child: IntroPage());
     }
