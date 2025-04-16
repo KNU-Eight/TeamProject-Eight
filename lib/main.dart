@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     if(snapshot.hasError) {
       return const Text("Error!!");
     } else if(snapshot.hasData) {
-      return SafeArea(child: MainPageView(newsLinks: newsLinks,));
+      return SafeArea(child: LoginPage(newsLinks: newsLinks));
     } else {
       return const SafeArea(child: IntroPage());
     }

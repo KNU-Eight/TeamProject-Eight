@@ -8,15 +8,21 @@ const _bnbItems = [
   BNBIcon(
     enabledIcon: Icons.home,
     disabledIcon: Icons.home_outlined,
-    label:'Home',
+    label:'홈',
     index: 0,
   ),
   BNBIcon(
-    enabledIcon: Icons.map,
-    disabledIcon: Icons.map_outlined,
-    label:'Map',
+    enabledIcon: Icons.chat,
+    disabledIcon: Icons.chat_outlined,
+    label:'챗봇',
     index: 1,
   ),
+  BNBIcon(
+    enabledIcon: Icons.person,
+    disabledIcon: Icons.person_outlined,
+    label:'내 정보',
+    index: 2,
+  )
 ];
 
 class MainPageView extends StatefulWidget{
