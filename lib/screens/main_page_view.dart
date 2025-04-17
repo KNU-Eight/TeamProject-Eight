@@ -3,6 +3,8 @@ import 'package:prevent_rental_fraud/screens/home_page.dart';
 import 'package:prevent_rental_fraud/screens/intro_page.dart';
 import 'package:prevent_rental_fraud/widgets/navigation_bar_item.dart';
 
+import 'chatbot_page.dart';
+
 //Bottom Navigation Items
 const _bnbItems = [
   BNBIcon(
@@ -37,13 +39,16 @@ class MainPageView extends StatefulWidget{
 
 class _MainPageViewState extends State<MainPageView>{
   final _pageController = PageController();
-  late TabController _tabController; // TabController 추가
   int _pageIndex = 0;    //현재 페이지 인덱스
   late List<Widget> _pages;
-
+  @override
+  void dispose(){
+    _pageController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    _pages = [HomePage(newsLinks: widget.newsLinks,), IntroPage()];
+    _pages = [HomePage(newsLinks: widget.newsLinks,), ChatbotPage()];
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),

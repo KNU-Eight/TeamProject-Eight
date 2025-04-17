@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage>{
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final double startPosition = 0.06;
     return Scaffold(
       body: Container(
         width: screenWidth, // 동적 너비
@@ -30,13 +31,13 @@ class _HomePageState extends State<HomePage>{
               top: 0,
               child: Container(
                 width: screenWidth,
-                height: screenHeight * 0.08 + 150,
+                height: screenHeight * startPosition + 150,
                 decoration: BoxDecoration(color: const Color(0xFFFFDA62)),
               ),
             ),
             Positioned(
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08 + 90,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition + 90,
               child: Text(
                 '어려운 뉴스도 요약해서 쉽게 알려드려요',
                 textAlign: TextAlign.center,
@@ -50,8 +51,8 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             Positioned(
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08 + 60,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition + 60,
               child: Text(
                 '최근 뉴스 ',
                 textAlign: TextAlign.center,
@@ -65,8 +66,8 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             Positioned(
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition,
               child: Text(
                 '홈',
                 textAlign: TextAlign.center,
@@ -80,15 +81,15 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             Positioned(   //뉴스 컨테이너
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08 + 110,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition + 110,
               child: NewsListBuilder(
                 newsLinks: widget.newsLinks,
               )
             ),
             Positioned(
               left: screenWidth,
-              top: screenHeight * 0.08 + 150,
+              top: screenHeight * startPosition + 150,
               child: Container(
                 width: 162,
                 height: 77,
@@ -101,8 +102,8 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             Positioned(
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08 + 200,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition + 200,
               child: Text(
                 'AI 서비스',
                 textAlign: TextAlign.center,
@@ -116,10 +117,10 @@ class _HomePageState extends State<HomePage>{
               ),
             ),
             Positioned(
-              left: screenWidth * 0.06,
-              top: screenHeight * 0.08 + 240,
+              left: screenWidth * startPosition,
+              top: screenHeight * startPosition + 240,
               child: Container(
-                width: screenWidth * 0.8,
+                width: screenWidth * 0.88,
                 height: 200,
                 decoration: ShapeDecoration(
                   color: Colors.white,
@@ -128,7 +129,7 @@ class _HomePageState extends State<HomePage>{
                   ),
                 ),
                 child: Text(
-                  '전세사기 피해 예방',
+                  '깡통 전세 판단',     //이 부분에 사용자 접근성을 고려한 AI간략화 기능이 있으면 좋을듯
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.black,

@@ -55,6 +55,7 @@ class _NewsContainerState extends State<NewsContainer> with SingleTickerProvider
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
       builder: (context) {
         return DraggableScrollableSheet(
           expand: false,

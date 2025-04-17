@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'home_page.dart';
 import 'main_page_view.dart';
 
 class LoginPage extends StatefulWidget{
@@ -94,7 +92,7 @@ class _LoginState extends State<LoginPage> {
                   InkWell(
                     onTap:(){
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => MainPageView(newsLinks: widget.newsLinks))
+                        MaterialPageRoute(builder: (context) => SafeArea(child: MainPageView(newsLinks: widget.newsLinks)))
                       );
                     },
                     child: Container(
@@ -120,7 +118,7 @@ class _LoginState extends State<LoginPage> {
                             height: 18,
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(),
-                            child: Icon(Icons.person_add_outlined, size: 18, color: Color(0xFF0000FF)),
+                            child: Icon(Icons.login_outlined, size: 18, color: Color(0xFF0000FF)),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
