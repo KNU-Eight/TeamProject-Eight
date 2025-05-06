@@ -58,7 +58,7 @@ class PaintBubble extends CustomPainter{
     final notIsMePath = isMePath.transform(combinedMatrix.storage);           //반전 및 좌표 이동
 
     if(isMe) {
-      canvas.drawPath(isMePath, fillPaint);
+      canvas.drawPath(isMePath, borderPaint);
     } else{
       canvas.drawPath(notIsMePath, fillPaint);
     }

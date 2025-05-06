@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "744927500491",
+    "project_id": "prevent-rental-fraud-project",
+    "storage_bucket": "prevent-rental-fraud-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744927500491:android:874460a8d2181d3f04e34e",
+        "android_client_info": {
+          "package_name": "com.example.prevent_rental_fraud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzywVbbE8AgwninHCn8Jw349J8j81UimQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

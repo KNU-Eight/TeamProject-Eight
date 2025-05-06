@@ -49,7 +49,7 @@ class _LoginState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: screenHeight * 0.02,
                 children: [
-                  SizedBox(
+                  SizedBox(   //ID입력 필드
                     height: 40,
                     child:TextField(
                       maxLines: 1,
@@ -69,7 +69,7 @@ class _LoginState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  SizedBox(   //비밀번호 입력 필드
                     height: 40,
                     child:TextField(
                       maxLines: 1,
@@ -89,7 +89,7 @@ class _LoginState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  InkWell(
+                  InkWell(    //로그인 버튼
                     onTap:(){
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => SafeArea(child: MainPageView(newsLinks: widget.newsLinks)))

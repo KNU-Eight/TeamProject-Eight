@@ -115,6 +115,7 @@ class _ChatbotPageState extends State<ChatbotPage>{
                     _inputText = _textEditingController.text;
                     if(_inputText != ''){
                       sendMessage(_inputText, true);
+                      sendMessage('안녕하세요! 전세사기 예방 및 해결 도우미 집피티입니다. \n 무엇을 도와드릴까요?', false);
                       _textEditingController.clear();
                     }
                   },

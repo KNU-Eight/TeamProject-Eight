@@ -3,9 +3,14 @@ import 'package:prevent_rental_fraud/screens/home_page.dart';
 import 'package:prevent_rental_fraud/screens/intro_page.dart';
 import 'package:prevent_rental_fraud/screens/login_page.dart';
 import 'package:prevent_rental_fraud/screens/main_page_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   List<String> newsLinks = ["https://www.naver.com", "https://www.naver.com", "https://www.naver.com", "https://www.naver.com"];
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp(newsLinks: newsLinks,));
 }
 

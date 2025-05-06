@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prevent_rental_fraud/widgets/news_list_builder.dart';
 
-
-
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
@@ -138,36 +136,6 @@ class _HomePageState extends State<HomePage>{
                     fontWeight: FontWeight.w600,
                     height: 1,
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 347,
-              top: 51,
-              child: Container(
-                width: 40,
-                height: 40,
-                padding: const EdgeInsets.all(5),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: 8,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: double.infinity,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(),
-                        child: Stack(),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
