@@ -1,5 +1,4 @@
 import requests
-import json
 import os
 import fitz
 import logging
@@ -14,7 +13,7 @@ DETAIL_BASE_URL = "https://www.molit.go.kr/USR/NEWS/m_71/"
 
 
 def crawl_press_list(page=1):
-    params = {"page": page }
+    params = {"page": page , "search_section": "p_sec_2"}
     res = requests.get(BASE_URL, params=params)
     res.encoding = "utf-8"  
     soup = BeautifulSoup(res.text, "html.parser")
@@ -31,11 +30,10 @@ def crawl_press_list(page=1):
         category = row.select_one("td.bd_field").text.strip()
         date = row.select_one("td.bd_date").text.strip()
         # views = row.select_one("td.bd_inquiry").text.strip()
-        if category != "주택토지":
-            continue
 
         result.append({
             # "number": number,
+            "filename":title+date,
             "title": title,
             "link": link,
             "category": category,
@@ -67,6 +65,8 @@ def get_filelink(link):
 def download_pdf(url,filename, dir ="MOLITpdfs"):
     os.makedirs(dir,exist_ok=True)   #pdf 저장할 폴더 생성 => 폴더있으면 패스
     filepath = os.path.join(dir, filename + ".pdf") #"MOLIZTpdfs/도로교통사망자감소대책.pdf"
+    if os.path.exists(filepath):
+        return filepath
     # headers = {
     #     "User-Agent": (
     #         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -111,8 +111,12 @@ def paragraph_join(lines):
         result.append(buffer.strip())
 
     return "\n\n".join(result)
+
+
 if __name__ == "__main__":
-    articles = crawl_press_list(page=1)
+    articles = []
+    for page in range(1, 6):  # 5페이지
+        articles.extend(crawl_press_list(page=page))
     for article in articles:
         attachments= get_filelink(article['link'])
         article["attachments"]= attachments
@@ -122,7 +126,7 @@ if __name__ == "__main__":
             if "file_url" in item:
                 # print(item["file_url"], article["title"])
                 try:
-                    pdf_path = download_pdf(item["file_url"], article["title"])
+                    pdf_path = download_pdf(item["file_url"], article["filename"])
                     lines = extract_pdf_text(pdf_path)
                     pdf_text=paragraph_join(lines)
                   
