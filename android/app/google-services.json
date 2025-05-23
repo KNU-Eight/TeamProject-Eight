@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "389061441770",
+    "project_id": "teameightdb",
+    "storage_bucket": "teameightdb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389061441770:android:d27d8a7dc696b3f492bf93",
+        "android_client_info": {
+          "package_name": "com.team_eight.prevent_rental_fraud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389061441770-dc9qod4cv6bm0gg8rklda3gro5jtc7g8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team_eight.prevent_rental_fraud",
+            "certificate_hash": "afa2ae9a694cd0712851f0504dcea591a4dce557"
+          }
+        },
+        {
+          "client_id": "389061441770-3u1sa4b95ro44qeraegne4mc76gb0h6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOERqoqNZQp6bVycTfo_CTJyzSWN96WW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389061441770-3u1sa4b95ro44qeraegne4mc76gb0h6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

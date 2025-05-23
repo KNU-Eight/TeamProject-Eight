@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/chat_bubble.dart';
 import '../widgets/message_container.dart';
@@ -18,19 +20,61 @@ class _ChatbotPageState extends State<ChatbotPage>{
   List<ChatBubble> _bubbles = [];
   final StreamController<List<ChatBubble>> _streamController = StreamController<List<ChatBubble>>();
   final TextEditingController _textEditingController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Firestore 인스턴스
+  User? _currentUser; // 현재 Firebase 사용자
 
   bool _isLoading = false;
-  void _addMessageToChat(String message, bool isMe){
+
+  void _addMessageToChat(String message, bool isMe) async {
     if (message.isNotEmpty) {
       _bubbles.add(ChatBubble(isMe: isMe, text: message));
       _streamController.add(List.from(_bubbles));
+
+      if (_currentUser != null) { // 사용자 로그인 여부 확인
+        await _firestore.collection('chat_histories')
+            .doc(_currentUser!.uid)
+            .collection('messages')
+            .add({
+          'text': message,
+          'isMe': isMe,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
+    }
+  }
+
+  Future<void> _loadChatHistory() async { // 채팅 기록 로드 함수
+    _currentUser = FirebaseAuth.instance.currentUser; // 현재 사용자 가져오기
+    if (_currentUser != null) { // 사용자 로그인 여부 확인
+      try {
+        final querySnapshot = await _firestore.collection('chat_histories')
+            .doc(_currentUser!.uid)
+            .collection('messages')
+            .orderBy('timestamp', descending: false)
+            .get();
+
+        _bubbles.clear(); // 기존 버블 지우기
+        for (var doc in querySnapshot.docs) { // 문서 반복
+          final data = doc.data();
+          _bubbles.add(ChatBubble(isMe: data['isMe'], text: data['text'])); // 데이터에서 채팅 버블 추가
+        }
+        if (_bubbles.isEmpty) { // 이력이 없으면 초기 메시지 추가
+          _addMessageToChat('안녕하세요! 전세사기 예방 및 해결 도우미 집피티입니다. \n 무엇을 도와드릴까요?', false); // 초기 메시지 추가
+        }
+        _streamController.add(List.from(_bubbles));
+      } catch (e) {
+        print("채팅 기록 로드 중 오류: $e");
+        _addMessageToChat("채팅 기록을 불러오는 데 실패했습니다.", false); // 채팅에 오류 메시지 추가
+      }
+    } else {
+      _addMessageToChat('안녕하세요! 전세사기 예방 및 해결 도우미 집피티입니다. \n 무엇을 도와드릴까요?', false); // 로그인하지 않은 경우 초기 메시지 추가
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _addMessageToChat('안녕하세요! 전세사기 예방 및 해결 도우미 집피티입니다. \n 무엇을 도와드릴까요?', false);
+    _loadChatHistory(); // 초기화 시 채팅 기록 로드
   }
 
   @override
@@ -58,7 +102,9 @@ class _ChatbotPageState extends State<ChatbotPage>{
     // FastAPI 백엔드 호출
     // 웹에서 테스트 시 'http://localhost:8000' 사용
     // Android 에뮬레이터 시 'http://10.0.2.2:8000/chat' 사용
-    final String backendUrl = "http://localhost:8000/chat";
+    // final String backendUrl = "http://localhost:8000/chat";
+
+    final String backendUrl = "http://10.0.2.2:8000/chat";
 
     try {
       final response = await http.post(
@@ -97,10 +143,12 @@ class _ChatbotPageState extends State<ChatbotPage>{
     }
   }
 
+  /*
   void sendMessage(String message, bool isMe){
     _bubbles.add(ChatBubble(isMe: isMe, text: message));
     _streamController.add(_bubbles);
   }
+  */
 
   @override
   Widget build(BuildContext context) {
