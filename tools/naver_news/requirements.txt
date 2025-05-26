@@ -1,0 +1,7 @@
+selenium
+webdriver-manager
+ujson
+pandas
+beautifulsoup4
+trafilatura
+tqdm
