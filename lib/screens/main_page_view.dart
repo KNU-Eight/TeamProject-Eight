@@ -39,16 +39,26 @@ class MainPageView extends StatefulWidget{
 
 class _MainPageViewState extends State<MainPageView>{
   final _pageController = PageController();
+  final ValueNotifier<int> _pageIndexNotifier = ValueNotifier<int>(0); // 변경 감지를 위한 Notifier
   int _pageIndex = 0;    //현재 페이지 인덱스
   late List<Widget> _pages;
   @override
   void dispose(){
     _pageController.dispose();
+    _pageIndexNotifier.dispose();
     super.dispose();
   }
+  void changePage(int index) {
+    setState(() {
+      _pageIndexNotifier.value = index;
+      _pageIndex = index;
+      _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.ease);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    _pages = [HomePage(newsLinks: widget.newsLinks,), ChatbotPage()];
+    _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage()];
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
