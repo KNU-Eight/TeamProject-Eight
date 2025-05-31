@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prevent_rental_fraud/screens/home_page.dart';
 import 'package:prevent_rental_fraud/screens/intro_page.dart';
+import 'package:prevent_rental_fraud/screens/my_info_page.dart';
 import 'package:prevent_rental_fraud/widgets/navigation_bar_item.dart';
 
 import 'chatbot_page.dart';
@@ -58,7 +59,7 @@ class _MainPageViewState extends State<MainPageView>{
 
   @override
   Widget build(BuildContext context) {
-    _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage()];
+    _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage(), MyInfoPage()];
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
