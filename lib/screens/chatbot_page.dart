@@ -58,19 +58,18 @@ class _ChatbotPageState extends State<ChatbotPage>{
                   ),
                 ),
               ),
-              Positioned(
-                width: screenWidth,
-                bottom: 0,
-                child:Column(
+              Positioned.fill( // Positioned를 추가하여 하단을 채움
+                top: screenHeight * startPosition + 50, // 첫 번째 Positioned 다음부터 시작
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SingleChildScrollView(
+                    Expanded( // 빈 공간을 채우도록 설정
                       child: Container(
-                        height: screenHeight * 0.93 - 226,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30)
+                            topRight: Radius.circular(30),
                           ),
                         ),
                         child: Column(
@@ -86,7 +85,7 @@ class _ChatbotPageState extends State<ChatbotPage>{
                                 },
                               ),
                             ),
-                          ]
+                          ],
                         ),
                       ),
                     ),
@@ -94,13 +93,12 @@ class _ChatbotPageState extends State<ChatbotPage>{
                       padding: EdgeInsets.symmetric(vertical: 15),
                       color: Colors.white,
                       child: Row(
-                        spacing: 10,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
                             height: 40,
                             width: screenWidth * 0.8,
-                            child:TextField(
+                            child: TextField(
                               controller: _textEditingController,
                               maxLines: 1,
                               style: TextStyle(
@@ -108,21 +106,21 @@ class _ChatbotPageState extends State<ChatbotPage>{
                                 height: 1,
                               ),
                               decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  hintText: '내용을 입력해 주세요.',
-                                  hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    height: 1,
-                                  )
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: '내용을 입력해 주세요.',
+                                hintStyle: TextStyle(
+                                  fontSize: 12,
+                                  height: 1,
+                                ),
                               ),
                             ),
                           ),
                           InkWell(
-                            onTap: (){
+                            onTap: () {
                               _inputText = _textEditingController.text;
-                              if(_inputText != ''){
+                              if (_inputText.isNotEmpty) {
                                 sendMessage(_inputText, true);
                                 sendMessage('안녕하세요! 전세사기 예방 및 해결 도우미 집피티입니다. \n 무엇을 도와드릴까요?', false);
                                 _textEditingController.clear();
@@ -131,13 +129,12 @@ class _ChatbotPageState extends State<ChatbotPage>{
                             child: Icon(Icons.send, size: 40),
                           )
                         ],
-                      )
-                    )
-
+                      ),
+                    ),
                   ],
-                )
+                ),
               ),
-            ]
+            ],
           )
         ),
       )
