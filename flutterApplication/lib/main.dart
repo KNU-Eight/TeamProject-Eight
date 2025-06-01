@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:prevent_rental_fraud/screens/home_page.dart';
 import 'package:prevent_rental_fraud/screens/intro_page.dart';
 import 'package:prevent_rental_fraud/screens/login_page.dart';
-import 'package:prevent_rental_fraud/screens/main_page_view.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'global_value_controller.dart';
 
 void main() async {
   List<String> newsLinks = ["https://www.naver.com", "https://www.naver.com", "https://www.naver.com", "https://www.naver.com"];
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   Get.put(GlobalValueController());
   runApp(MyApp(newsLinks: newsLinks,));
 }

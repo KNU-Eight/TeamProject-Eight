@@ -15,7 +15,8 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage>{
   bool isPressedAIService1 = false;
-  bool isDelayed = false;
+  bool isTextButtonCloseDelayed = false;
+  bool isShowCheckListDelayed = false;
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -132,20 +133,31 @@ class _HomePageState extends State<HomePage>{
                           setState(() {
                             isPressedAIService1 = !isPressedAIService1;
                           });
-                          if(!isDelayed) {
+                          if(!isTextButtonCloseDelayed){
+                            setState(() {
+                              isTextButtonCloseDelayed = !isTextButtonCloseDelayed;
+                            });
+                          } else {
+                            Future.delayed(Duration(milliseconds: 230), (){
+                              setState(() {
+                                isTextButtonCloseDelayed = !isTextButtonCloseDelayed;
+                              });
+                            });
+                          }
+                          if(!isShowCheckListDelayed) {
                             Future.delayed(Duration(milliseconds: 200), () {
                               setState(() {
-                                isDelayed = !isDelayed;
+                                isShowCheckListDelayed = !isShowCheckListDelayed;
                               });
                             });
                           } else{
                             setState(() {
-                              isDelayed = !isDelayed;
+                              isShowCheckListDelayed = !isShowCheckListDelayed;
                             });
                           }
                         },
                         style: TextButton.styleFrom(
-                          shape: isPressedAIService1 ? RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))) 
+                          shape: isTextButtonCloseDelayed ? RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)))
                               : RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           backgroundColor: Colors.white,
                           fixedSize: Size(screenWidth * 0.5, 60),
@@ -179,7 +191,7 @@ class _HomePageState extends State<HomePage>{
                             for(int i = 0; i < 5; i++)
                               AnimatedSwitcher(
                                 duration: Duration(milliseconds: 100 * i + 100),
-                                child: isDelayed ? Row(
+                                child: isShowCheckListDelayed ? Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Row(
@@ -229,11 +241,6 @@ class _HomePageState extends State<HomePage>{
                 ],
               )
             ),
-            // Positioned(
-            //   left: screenWidth * 0.25,
-            //   top: screenHeight * startPosition + 430,
-            //   child:
-            // ),
           ],
         ),
       ),
