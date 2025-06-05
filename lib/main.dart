@@ -3,10 +3,27 @@ import 'package:get/get.dart';
 import 'package:prevent_rental_fraud/screens/intro_page.dart';
 import 'package:prevent_rental_fraud/screens/login_page.dart';
 import 'global_value_controller.dart';
+import 'package:prevent_rental_fraud/screens/main_page_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
 
 void main() async {
   List<String> newsLinks = ["https://www.naver.com", "https://www.naver.com", "https://www.naver.com", "https://www.naver.com"];
   Get.put(GlobalValueController());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /*
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  */
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
   runApp(MyApp(newsLinks: newsLinks,));
 }
 
@@ -36,14 +53,19 @@ class MyApp extends StatelessWidget {
   }
   Widget _splashLoadingWidget(AsyncSnapshot<Object?> snapshot) {
     if(snapshot.hasError) {
-      return const Text("Error!!");
+      return const Text("Error!!"); // 에러 메시지
     } else if(snapshot.hasData) {
-      return SafeArea(child: LoginPage(newsLinks: newsLinks));
+      // 사용자가 로그인되어 있다면 MainPageView로 이동
+      if (snapshot.data is User) { // 사용자 객체인지 확인
+        return SafeArea(child: MainPageView(newsLinks: newsLinks)); // MainPageView로 이동
+      }
+      return SafeArea(child: LoginPage(newsLinks: newsLinks)); // 로그인 페이지로 이동
     } else {
-      return const SafeArea(child: IntroPage());
+      return const SafeArea(child: IntroPage()); // 인트로 페이지로 이동
     }
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});

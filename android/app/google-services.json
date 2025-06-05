@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "744927500491",
-    "project_id": "prevent-rental-fraud-project",
-    "storage_bucket": "prevent-rental-fraud-project.firebasestorage.app"
+    "project_number": "389061441770",
+    "project_id": "teameightdb",
+    "storage_bucket": "teameightdb.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:744927500491:android:874460a8d2181d3f04e34e",
+        "mobilesdk_app_id": "1:389061441770:android:d27d8a7dc696b3f492bf93",
         "android_client_info": {
-          "package_name": "com.example.prevent_rental_fraud"
+          "package_name": "com.team_eight.prevent_rental_fraud"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "389061441770-dc9qod4cv6bm0gg8rklda3gro5jtc7g8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team_eight.prevent_rental_fraud",
+            "certificate_hash": "afa2ae9a694cd0712851f0504dcea591a4dce557"
+          }
+        },
+        {
+          "client_id": "389061441770-3u1sa4b95ro44qeraegne4mc76gb0h6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzywVbbE8AgwninHCn8Jw349J8j81UimQ"
+          "current_key": "AIzaSyDOERqoqNZQp6bVycTfo_CTJyzSWN96WW4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389061441770-3u1sa4b95ro44qeraegne4mc76gb0h6m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
