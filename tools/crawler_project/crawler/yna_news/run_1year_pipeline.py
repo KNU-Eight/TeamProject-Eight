@@ -1,5 +1,13 @@
 from fetch_links_1year import fetch_links_1year
 from fetch_article_contents import fetch_article_contents
+import os
+base_dir = os.path.dirname(__file__)
+data_dir = os.path.join(base_dir, "..", "data", "yna_news")
+
+os.makedirs(data_dir, exist_ok=True)
+
+urls_path = os.path.join(data_dir, "urls_1year.json")
+articles_path = os.path.join(data_dir, "full_articles_1year.json")
 
 if __name__ == "__main__":
     print("🟢 3개월 치 뉴스 링크 수집 시작...")

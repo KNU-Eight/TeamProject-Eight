@@ -53,13 +53,13 @@ def extract_article_info(url: str):
         }
 
     except Exception as e:
-        print(f"❌ 실패: {url} — {e}")
+        print(f"실패: {url} — {e}")
         save_failed_html(url, soup)
         log_failed_url(url)
         return None
 
 def save_failed_html(url: str, soup):
-    """실패한 페이지를 HTML로 저장"""
+    #실패한 페이지를 HTML로 저장
     article_id = url.split("/")[-1].split("?")[0]
     save_path = f"data/failed_html/{article_id}.html"
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -67,11 +67,11 @@ def save_failed_html(url: str, soup):
         f.write(str(soup))
 
 def log_failed_url(url: str):
-    """실패한 URL을 로그에 기록"""
+    #실패한 URL을 로그에 기록
     with open("data/failed_urls.txt", "a", encoding="utf-8") as f:
         f.write(url + "\n")
 
-def fetch_article_contents(input_path="data/urls_1year.json", output_path="data/full_articles.json"):
+def fetch_article_contents(input_path, output_path):
     if not os.path.exists(input_path):
         print(f"입력 파일이 존재하지 않습니다: {input_path}")
         return

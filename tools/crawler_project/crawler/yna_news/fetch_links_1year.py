@@ -32,7 +32,7 @@ def fetch_links_1year(keywords=None, max_pages=100, output_path="data/urls_1year
     driver = webdriver.Chrome(options=options)
     links = set()
 
-    # ✅ 기존 링크 로드
+    #  기존 링크 로드
     if os.path.exists(output_path):
         with open(output_path, "r", encoding="utf-8") as f:
             existing_links = set(json.load(f))
@@ -51,7 +51,7 @@ def fetch_links_1year(keywords=None, max_pages=100, output_path="data/urls_1year
                 EC.presence_of_element_located((By.CSS_SELECTOR, "ul.list01 li div.item-box01"))
             )
         except:
-            print(f"❌ {page}페이지: 로딩 실패 또는 뉴스 없음")
+            print(f" {page}페이지: 로딩 실패 또는 뉴스 없음")
             break
 
         soup = BeautifulSoup(driver.page_source, "lxml")
@@ -74,7 +74,7 @@ def fetch_links_1year(keywords=None, max_pages=100, output_path="data/urls_1year
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(list(all_links), f, ensure_ascii=False, indent=2)
 
-    print(f"✅ 3개월 치치 수집 완료: {len(links)}개 추가됨 (총 {len(all_links)}개)")
+    print(f" 3개월 치치 수집 완료: {len(links)}개 추가됨 (총 {len(all_links)}개)")
 
 
 # 실행 테스트
