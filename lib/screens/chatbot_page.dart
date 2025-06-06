@@ -175,92 +175,100 @@ class _ChatbotPageState extends State<ChatbotPage>{
                   ),
                 ),
               ),
-              Positioned(
-                width: screenWidth,
-                height: screenHeight * 0.93 - 166,
-                top: screenHeight * startPosition + 60,
-                child:Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: StreamBuilder<List<ChatBubble>>(
-                          stream: _streamController.stream,
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) return Center(child: Text('대화 내용이 없습니다.'));
-                            return MessageContainer(
-                              bubbles: snapshot.data!,
-                            );
-                          },
-                        ),
-                      ),
-                    ]
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: screenHeight * 0.01,
-                left: screenWidth * startPosition,
-                width: screenWidth * 0.8,
-                child:SizedBox(
-                  height: 40,
-                  child:TextField(
-                    controller: _textEditingController,
-                    maxLines: 1,
-                    style: TextStyle(
-                      fontSize: 12,
-                      height: 1,
-                    ),
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        hintText: '내용을 입력해 주세요.',
-                        hintStyle: TextStyle(
-                          fontSize: 12,
-                          height: 1,
-                        )
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                  bottom: screenHeight * 0.01,
-                  left: screenWidth * startPosition + screenWidth * 0.8 + 8,
-                  child:GestureDetector(
-                    onTap: _isLoading ? null : _sendMessage,
-                    child: Container(
-                      width: 40, // 아이콘 버튼 크기
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: _isLoading ? Colors.grey : Theme.of(context).primaryColor, // 로딩 상태에 따라 색 변경
-                        shape: BoxShape.circle, // 원형 배경
-                      ),
-                      child: Center(
-                        child: _isLoading
-                            ? const SizedBox( // 로딩 중일 때 인디케이터 표시
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.5,
-                            color: Colors.white,
-                          ),
-                        )
-                            : const Icon( // 로딩 중이 아닐 때 보내기 아이콘 표시
-                          Icons.send,
-                          size: 24,
+              Positioned.fill( // Positioned를 추가하여 하단을 채움
+                top: screenHeight * startPosition + 50, // 첫 번째 Positioned 다음부터 시작
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded( // 빈 공간을 채우도록 설정
+                      child: Container(
+                        padding: EdgeInsets.only(top: 20),
+                        decoration: const BoxDecoration(
                           color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: StreamBuilder<List<ChatBubble>>(
+                                stream: _streamController.stream,
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) return Center(child: Text('대화 내용이 없습니다.'));
+                                  return MessageContainer(
+                                    bubbles: snapshot.data!,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  )
-              )
-            ]
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      color: Colors.white,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 40,
+                            width: screenWidth * 0.8,
+                            child: TextField(
+                              controller: _textEditingController,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 12,
+                                height: 1,
+                              ),
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                hintText: '내용을 입력해 주세요.',
+                                hintStyle: TextStyle(
+                                  fontSize: 12,
+                                  height: 1,
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: _isLoading ? null : _sendMessage,
+                            child: Container(
+                              width: 40, // 아이콘 버튼 크기
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: _isLoading ? Colors.grey : Theme.of(context).primaryColor, // 로딩 상태에 따라 색 변경
+                                shape: BoxShape.circle, // 원형 배경
+                              ),
+                              child: Center(
+                                child: _isLoading
+                                    ? const SizedBox( // 로딩 중일 때 인디케이터 표시
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    color: Colors.white,
+                                  ),
+                                )
+                                    : const Icon( // 로딩 중이 아닐 때 보내기 아이콘 표시
+                                  Icons.send,
+                                  size: 24,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           )
         ),
       )

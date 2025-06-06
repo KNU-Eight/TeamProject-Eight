@@ -35,10 +35,15 @@ class PaintBubble extends CustomPainter{
   void paint(Canvas canvas, Size size) {
     final borderPaint = Paint()
       ..color = Colors.grey
+      ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
     final fillPaint = Paint()
-      ..color = Colors.grey
+      ..color = Colors.white
       ..style = PaintingStyle.fill;
+    final aiBorderPaint = Paint()
+      ..color = const Color(0xFFFFDA62)
+      ..strokeWidth = 2.0
+      ..style = PaintingStyle.stroke;
     final double padding = 8.0;
     final isMePath = Path()
       ..moveTo(-padding, size.height - 4 + padding) // 시작점
@@ -60,7 +65,7 @@ class PaintBubble extends CustomPainter{
     if(isMe) {
       canvas.drawPath(isMePath, borderPaint);
     } else{
-      canvas.drawPath(notIsMePath, fillPaint);
+      canvas.drawPath(notIsMePath, aiBorderPaint);
     }
   }
 
