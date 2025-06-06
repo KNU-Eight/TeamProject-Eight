@@ -5,7 +5,6 @@ import uvicorn
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-from bjd_code_parsing import bjd_code_parsing as BCP
 import pandas as pd
 import json
 
