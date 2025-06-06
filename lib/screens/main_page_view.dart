@@ -49,6 +49,8 @@ class _MainPageViewState extends State<MainPageView>{
     _pageIndexNotifier.dispose();
     super.dispose();
   }
+
+  //페이지를 이동하는 함수
   void changePage(int index) {
     setState(() {
       _pageIndexNotifier.value = index;
@@ -62,7 +64,7 @@ class _MainPageViewState extends State<MainPageView>{
     _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage(), MyInfoPage()];
     return Scaffold(
       body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),    //스와이프로 화면이 이동하지 않도록 설정
         controller: _pageController,
         children: _pages,
       ),

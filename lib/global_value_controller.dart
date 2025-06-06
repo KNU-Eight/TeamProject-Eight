@@ -7,13 +7,13 @@ import 'package:xml/xml.dart' as xml;
 class GlobalValueController extends GetxController{
   var screenHeight = 0.0.obs;
   var screenWidth = 0.0.obs;
-  var selectedSiDoValue = {"전체": 0}.obs;
-  var selectedSggValue = {"전체": 0}.obs;
-  var siDoList = {"전체": 0}.obs;
-  var sggList = {"전체": 0}.obs;
+  var selectedSiDoValue = {"전체": 0}.obs;    
+  var selectedSggValue = {"전체": 0}.obs;     
+  var siDoList = {"전체": 0}.obs;   //시, 도 리스트를 파싱할 Map
+  var sggList = {"전체": 0}.obs;    //시, 군, 구 리스트를 파싱할 Map
   var siDoUpdated = false.obs;
-  var isPriceLoading = false.obs;
-  var dangerObject = [].obs;
+  var isPriceLoading = false.obs;   //깡통 전세 체크 리스트가 완료되었는지 체크하는 bool
+  var dangerObject = [].obs;        //깡통 전세 위험 매물을 저장할 리스트
 
   void updateScreenHeight(double screenHeight){
     this.screenHeight.value = screenHeight;
@@ -24,7 +24,8 @@ class GlobalValueController extends GetxController{
     this.screenWidth.value = screenWidth;
     update();
   }
-
+  
+  //시, 도 리스트 파싱 함수
   Future<void> initSiDoList() async {
     final String backendUrl = "http://10.0.2.2:8000/sido_code";
     try{
@@ -45,6 +46,8 @@ class GlobalValueController extends GetxController{
     update();
   }
 
+  
+  //시, 군, 구 리스트 파싱 함수
   Future<void> getSggList() async {
     print(selectedSiDoValue);
     final String backendUrl = "http://10.0.2.2:8000/sgg_code?sido_code=${selectedSiDoValue.values.first}";
@@ -68,6 +71,7 @@ class GlobalValueController extends GetxController{
     update();
   }
 
+  //선택된 지역의 전세가, 매매가를 계산하여 위험 매물을 체크하는 함수
   Future<void> getDepositAndSellPrice()async {
     //공공데이터 포탈에서 지역의 매매가 및 전세가를 불러오는 함수
     DateTime now = DateTime.now();

@@ -17,9 +17,6 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage>{
   var valueController = Get.find<GlobalValueController>();
-  bool isPressedAIService1 = false;
-  bool isTextButtonCloseDelayed = false;
-  bool isShowCheckListDelayed = false;
 
   @override
   void initState(){
@@ -34,8 +31,8 @@ class _HomePageState extends State<HomePage>{
     final double startPosition = 0.06;
     return Scaffold(
       body: Container(
-        width: screenWidth, // 동적 너비
-        height: screenHeight, // 동적 높이
+        width: screenWidth,
+        height: screenHeight,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(color: const Color(0xFFF0F0F0)),
         child: Stack(
@@ -101,7 +98,7 @@ class _HomePageState extends State<HomePage>{
                 newsLinks: widget.newsLinks,
               )
             ),
-            Positioned(
+            Positioned(   //노란색 영역을 제외한 영역
               left: screenWidth,
               top: screenHeight * startPosition + 150,
               child: Container(
@@ -115,14 +112,14 @@ class _HomePageState extends State<HomePage>{
                 ),
               ),
             ),
-            Positioned.fill(
+            Positioned.fill(    //추가적인 서비스를 담는 영역
               left: 0,
               top: screenHeight * startPosition + 200,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: 10,
                 children: [
-                  Expanded(
+                  Expanded(   //서비스 영역 디자인 객체(노란 테두리)
                     child: Container(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     margin: EdgeInsets.only(bottom: 10),
@@ -179,7 +176,7 @@ class _HomePageState extends State<HomePage>{
                             )
                           )
                         ),
-                        Divider(
+                        Divider(    //AI서비스와 깡통 전세 체크 기능 구분
                           color: const Color(0xFFFFDA62),
                           thickness: 4,
                         ),
@@ -197,7 +194,7 @@ class _HomePageState extends State<HomePage>{
                             height: 1,
                           ),
                         ),
-                        Expanded(
+                        Expanded(   //지역별, 가격별 기능을 나누기 위한 TabBar 및 TabBarView영역
                           child: DefaultTabController(
                             length: 2,
                             child: Column(
@@ -228,8 +225,7 @@ class _HomePageState extends State<HomePage>{
                                                   Text(
                                                     "시/도"
                                                   ),
-                                                  Obx(() =>
-                                                    DropdownButton<String>(
+                                                  Obx(() => DropdownButton<String>(   //valueController의 특정 변수 변경 시 자동 UI 업데이트. 시/도 드롭다운 버튼
                                                       value: valueController.selectedSiDoValue.keys.first,
                                                       items: valueController.siDoList.keys.map((String value){
                                                         return DropdownMenuItem<String>(
@@ -251,7 +247,7 @@ class _HomePageState extends State<HomePage>{
                                                   Text(
                                                     "시/군/구"
                                                   ),
-                                                  Obx(() => DropdownButton<String>(
+                                                  Obx(() => DropdownButton<String>(   //시/군/구 드롭다운 버튼
                                                     value: valueController.selectedSggValue.keys.first,
                                                     items: valueController.sggList.keys.map((String value){
                                                       return DropdownMenuItem<String>(
@@ -276,8 +272,7 @@ class _HomePageState extends State<HomePage>{
                                               "지역 위험 매물 확인"
                                             ),
                                           ),
-                                          Obx(() =>
-                                          valueController.isPriceLoading.value
+                                          Obx(() => valueController.isPriceLoading.value    //깡통 전세 위험 매물을 보여줄 ListView
                                           ? CircularProgressIndicator()
                                           : Expanded(child: ListView.builder(
                                             itemCount: valueController.dangerObject.length,
