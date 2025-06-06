@@ -18,15 +18,11 @@ class _IntroPage extends StatelessWidget {
         height: screenHeight, // 동적 높이
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(color: Colors.white),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 97,
+        child: Stack(
           children: [
-            SizedBox(
-              width: 188,
-              height: 46,
+            Positioned(
+              top: screenHeight * 0.3,
+              width: screenWidth,
               child: Text(
                 '집피티',
                 textAlign: TextAlign.center,
@@ -39,24 +35,31 @@ class _IntroPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              '안전한 집을 위한 가장 확실한 선택',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Noto Sans',
-                fontWeight: FontWeight.w500,
-                height: 1,
+            Positioned(
+              top: screenHeight * 0.3 + 46,
+              width: screenWidth,
+              child: Text(
+                '안전한 집을 위한 가장 확실한 선택',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Noto Sans',
+                  fontWeight: FontWeight.w500,
+                  height: 1,
+                ),
               ),
             ),
-            Container(
-              width: 412,
-              height: 412,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage("https://placehold.co/412x412"),
-                  fit: BoxFit.cover,
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: screenWidth,
+                height: screenHeight / 2,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage("https://placehold.co/412x412"),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

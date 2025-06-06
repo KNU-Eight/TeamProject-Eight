@@ -1,53 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:prevent_rental_fraud/screens/home_page.dart';
-import 'package:prevent_rental_fraud/screens/intro_page.dart';
+//import 'package:prevent_rental_fraud/screens/intro_page.dart';
+import 'package:prevent_rental_fraud/screens/my_info_page.dart';
+import 'package:prevent_rental_fraud/widgets/navigation_bar_item.dart';
 
-class BNBIcon{    //Icon을 Enabled와 Disabled로 나누어 동적으로 할당하기 위한 클래스
-  final IconData enabledIcon;
-  final IconData disabledIcon;
-  final String label;
-  final int index;
+import 'chatbot_page.dart';
 
-  const BNBIcon({
-    required this.enabledIcon,
-    required this.disabledIcon,
-    required this.label,
-    required this.index,
-  });
-}
 //Bottom Navigation Items
 const _bnbItems = [
   BNBIcon(
     enabledIcon: Icons.home,
     disabledIcon: Icons.home_outlined,
-    label:'Home',
+    label:'홈',
     index: 0,
   ),
   BNBIcon(
-    enabledIcon: Icons.map,
-    disabledIcon: Icons.map_outlined,
-    label:'Map',
+    enabledIcon: Icons.chat,
+    disabledIcon: Icons.chat_outlined,
+    label:'챗봇',
     index: 1,
   ),
+  BNBIcon(
+    enabledIcon: Icons.person,
+    disabledIcon: Icons.person_outlined,
+    label:'내 정보',
+    index: 2,
+  )
 ];
 
 class MainPageView extends StatefulWidget{
-  const MainPageView({super.key});
-
+  const MainPageView({
+    super.key,
+    required this.newsLinks
+  });
+  final List<String> newsLinks;
   @override
   createState() => _MainPageViewState();
 }
 
 class _MainPageViewState extends State<MainPageView>{
   final _pageController = PageController();
+  final ValueNotifier<int> _pageIndexNotifier = ValueNotifier<int>(0); // 변경 감지를 위한 Notifier
   int _pageIndex = 0;    //현재 페이지 인덱스
-  List<Widget> _pages = [HomePage(), IntroPage()];
-  List<Icon> _bottomNavigationBarIcons = [Icon(Icons.home_filled), Icon(Icons.map_outlined)];
+  late List<Widget> _pages;
+  @override
+  void dispose(){
+    _pageController.dispose();
+    _pageIndexNotifier.dispose();
+    super.dispose();
+  }
+
+  //페이지를 이동하는 함수
+  void changePage(int index) {
+    setState(() {
+      _pageIndexNotifier.value = index;
+      _pageIndex = index;
+      _pageController.animateToPage(index, duration: Duration(milliseconds: 300), curve: Curves.ease);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage(), MyInfoPage()];
     return Scaffold(
       body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),    //스와이프로 화면이 이동하지 않도록 설정
         controller: _pageController,
         children: _pages,
       ),
