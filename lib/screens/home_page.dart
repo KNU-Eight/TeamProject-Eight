@@ -275,6 +275,22 @@ class _HomePageState extends State<HomePage>{
                                             child: Text(
                                               "지역 위험 매물 확인"
                                             ),
+                                          ),
+                                          Obx(() =>
+                                          valueController.isPriceLoading.value
+                                          ? CircularProgressIndicator()
+                                          : Expanded(child: ListView.builder(
+                                            itemCount: valueController.dangerObject.length,
+                                            itemBuilder: (BuildContext context, int index) {
+                                              return ListTile(
+                                                title: Text(
+                                                  valueController.dangerObject[index],
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                );
+                                              },
+                                              )
+                                            )
                                           )
                                         ]
                                       ),
