@@ -5,7 +5,7 @@ import uvicorn
 import openai
 import faiss
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,7 +17,7 @@ load_dotenv()
 
 # OpenAI 클라이언트 초기화
 try:
-    client = openai.OpenAI()
+    client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY_DEV"))
     print("OpenAI client initialized.")
 except Exception as e:
     print(f"Error initializing OpenAI client: {e}")
@@ -34,7 +34,7 @@ async def lifespan(app: FastAPI):
             search_data_list = json.load(f)
         
         texts = [item["text"] for item in search_data_list]
-        vectors = np.array([item["emAbedding"] for item in search_data_list]).astype("float32")
+        vectors = np.array([item["embedding"] for item in search_data_list]).astype("float32")
 
         if vectors.size == 0:
             print("Warning: No embeddings found in 'embedded_chunks.json'. Search will not work.")
