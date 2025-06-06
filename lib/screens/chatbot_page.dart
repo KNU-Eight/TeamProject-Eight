@@ -189,6 +189,7 @@ class _ChatbotPageState extends State<ChatbotPage>{
                   children: [
                     Expanded( // 빈 공간을 채우도록 설정
                       child: Container(
+                        padding: EdgeInsets.only(top: 20),
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(

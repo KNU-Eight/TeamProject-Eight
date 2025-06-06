@@ -1,10 +1,13 @@
 # main.py
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
 import uvicorn
 import os
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from bjd_code_parsing import bjd_code_parsing as BCP
+import pandas as pd
+import json
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -50,6 +53,8 @@ class PromptRequest(BaseModel):
 class LLMResponse(BaseModel):
     response: str # LLM의 응답 텍스트
 
+
+
 # LLM과 통신하는 엔드포인트 정의
 @app.post("/chat", response_model=LLMResponse)
 async def chat_with_llm(request: PromptRequest):
@@ -86,6 +91,45 @@ async def chat_with_llm(request: PromptRequest):
         # 그 외 예외 처리
         print(f"An unexpected error occurred: {e}")
         raise HTTPException(status_code=500, detail=f"서버 내부 에러 발생: {e}")
+
+@app.get("/sido_code")
+async def parse_sido_code():
+    try:
+        bjd_code_df = pd.read_csv('../assets/config/bjd_code.csv')
+        bjd_code_df.columns = [
+            "code",
+            "bjd_name",
+            "is_abolition"
+        ]
+
+        if bjd_code_df["code"][0] == "1100000000":
+            print("true")
+        bjd_code_df = bjd_code_df[bjd_code_df["is_abolition"] != "폐지"]
+        sido_df = bjd_code_df[bjd_code_df["code"].apply(lambda x: str(x)[2:] == '0' * (len(str(x)) - 2))]
+        sido_json = sido_df.to_json(orient="records")
+        sido_json = json.dumps(json.loads(sido_json), ensure_ascii=False)
+        print(sido_json)
+    except Exception as e:
+        print(f'법정동 코드 파싱 에러 {e}')
+    return Response(content=sido_json, media_type="application/json")
+
+@app.get("/sgg_code")
+async def parse_bjd_sgg_code(sido_code: int):
+    try:
+        bjd_code_df = pd.read_csv('../assets/config/bjd_code.csv')
+        bjd_code_df.columns = [
+            "code",
+            "bjd_name",
+            "is_abolition"
+        ]
+
+        bjd_code_df = bjd_code_df[bjd_code_df["is_abolition"] != "폐지"]
+        sgg_df = bjd_code_df[bjd_code_df["code"].apply(lambda x: str(x)[2:] != '0' * (len(str(x)) - 2) and str(x)[5:] == '0' * (len(str(x)) - 5) and str(x)[:2] == str(sido_code)[:2])]
+        sgg_json = sgg_df.to_json(orient="records")
+        sgg_json = json.dumps(json.loads(sgg_json), ensure_ascii=False)
+    except Exception as e:
+        print(f'법정동 코드 파싱 에러 {e}')
+    return Response(content=sgg_json, media_type="application/json")
 
 
 if __name__ == "__main__":

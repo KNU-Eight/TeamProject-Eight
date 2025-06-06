@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prevent_rental_fraud/global_value_controller.dart';
 import 'package:prevent_rental_fraud/widgets/news_list_builder.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,9 +16,17 @@ class HomePage extends StatefulWidget {
   createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage>{
+  var valueController = Get.find<GlobalValueController>();
   bool isPressedAIService1 = false;
   bool isTextButtonCloseDelayed = false;
   bool isShowCheckListDelayed = false;
+
+  @override
+  void initState(){
+    super.initState();
+    valueController.initSiDoList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -105,144 +115,186 @@ class _HomePageState extends State<HomePage>{
                 ),
               ),
             ),
-            Positioned(
-              left: screenWidth * startPosition,
+            Positioned.fill(
+              left: 0,
               top: screenHeight * startPosition + 200,
-              child: Text(
-                'AI 서비스',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
-                  height: 1,
-                ),
-              ),
-            ),
-            Positioned(
-              left: screenWidth * 0.25,
-              top: screenHeight * startPosition + 240,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 spacing: 10,
                 children: [
-                  Column(
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            isPressedAIService1 = !isPressedAIService1;
-                          });
-                          if(!isTextButtonCloseDelayed){
-                            setState(() {
-                              isTextButtonCloseDelayed = !isTextButtonCloseDelayed;
-                            });
-                          } else {
-                            Future.delayed(Duration(milliseconds: 230), (){
-                              setState(() {
-                                isTextButtonCloseDelayed = !isTextButtonCloseDelayed;
-                              });
-                            });
-                          }
-                          if(!isShowCheckListDelayed) {
-                            Future.delayed(Duration(milliseconds: 200), () {
-                              setState(() {
-                                isShowCheckListDelayed = !isShowCheckListDelayed;
-                              });
-                            });
-                          } else{
-                            setState(() {
-                              isShowCheckListDelayed = !isShowCheckListDelayed;
-                            });
-                          }
-                        },
-                        style: TextButton.styleFrom(
-                          shape: isTextButtonCloseDelayed ? RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)))
-                              : RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          backgroundColor: Colors.white,
-                          fixedSize: Size(screenWidth * 0.5, 60),
-                        ),
-                        child: Text(
-                          '깡통 전세 체크',     //이 부분에 사용자 접근성을 고려한 AI간략화 기능이 있으면 좋을듯
-                          textAlign: TextAlign.center,
+                  Expanded(
+                    child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    margin: EdgeInsets.only(bottom: 10),
+                    width: screenWidth * 0.88,
+                    decoration: ShapeDecoration(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        side: BorderSide(
+                          color:  const Color(0xFFFFDA62),
+                          width: 4,
+                          // strokeAlign: 1
+                        )
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "AI 서비스",
+                          textAlign: TextAlign.start,
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
+                            fontSize: 24,
                             fontFamily: 'Inter',
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                             height: 1,
                           ),
                         ),
-                      ),
-                      AnimatedContainer(
-                        clipBehavior: Clip.hardEdge,
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        width: screenWidth * 0.5,
-                        height: isPressedAIService1 ? 180 : 0,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(30), bottomLeft: Radius.circular(30)),
+                        TextButton(
+                          onPressed: (){
+                            widget.onPageChange(1);
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all(Colors.white),
+                            fixedSize: WidgetStateProperty.all(Size(screenWidth * 0.5, 60)),
+                          ),
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '챗봇 상담 하러 가기',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w600,
+                                    height: 1,
+                                  )
+                                ),
+                                Icon(Icons.arrow_right_alt)
+                              ],
+                            )
+                          )
+                        ),
+                        Divider(
+                          color: const Color(0xFFFFDA62),
+                          thickness: 4,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "깡통 전세 체크",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            height: 1,
                           ),
                         ),
-                        duration: Duration(milliseconds: 300),
-                        child: Column(
-                          children: [
-                            for(int i = 0; i < 5; i++)
-                              AnimatedSwitcher(
-                                duration: Duration(milliseconds: 100 * i + 100),
-                                child: isShowCheckListDelayed ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        Expanded(
+                          child: DefaultTabController(
+                            length: 2,
+                            child: Column(
+                              children: [
+                                TabBar(
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  indicatorColor: const Color(0xFFFFDA62),
+                                  indicatorWeight: 4.0,
+                                  tabs: [
+                                    Tab(text: '지역별'),
+                                    Tab(text: '가격별'),
+                                  ],
+                                  labelColor: Colors.blue,
+                                  unselectedLabelColor: Colors.grey,
+                                ),
+                                Expanded(
+                                  child: TabBarView(
                                     children: [
-                                      Row(
-                                          spacing: 5,
-                                          children: [
-                                            Icon(Icons.circle, size: 5),
-                                            Text("$i 번째 체크 리스트")
-                                          ]
+                                      Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "시/도"
+                                                  ),
+                                                  Obx(() =>
+                                                    DropdownButton<String>(
+                                                      value: valueController.selectedSiDoValue.keys.first,
+                                                      items: valueController.siDoList.keys.map((String value){
+                                                        return DropdownMenuItem<String>(
+                                                          value: value,
+                                                          child: Text(value),
+                                                        );
+                                                      }).toList(),
+                                                      onChanged: (String? selectedValue) async {
+                                                        valueController.selectedSiDoValue.value = {selectedValue!: valueController.siDoList[selectedValue]!};
+                                                        await valueController.getSggList();
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "시/군/구"
+                                                  ),
+                                                  Obx(() => DropdownButton<String>(
+                                                    value: valueController.selectedSggValue.keys.first,
+                                                    items: valueController.sggList.keys.map((String value){
+                                                      return DropdownMenuItem<String>(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (String? selectedValue){
+                                                      valueController.selectedSggValue.value = {selectedValue!: valueController.sggList[selectedValue]!};
+                                                    },
+                                                  ),
+                                                  )
+                                                ],
+                                              )
+                                            ]
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              valueController.getDepositAndSellPrice();
+                                            },
+                                            child: Text(
+                                              "지역 위험 매물 확인"
+                                            ),
+                                          )
+                                        ]
                                       ),
-                                      Icon(Icons.check_circle, size: 15, color: Colors.green)
-                                    ]
-                                ) : SizedBox.shrink(),
-                              )
-                          ],
+                                      Center(child: Text('탭 2 내용')),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                         ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: (){
-                      widget.onPageChange(1);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: WidgetStateProperty.all(Colors.white),
-                      fixedSize: WidgetStateProperty.all(Size(screenWidth * 0.5, 60)),
+                      ],
                     ),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                              '챗봇 상담 하러 가기',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w600,
-                                height: 1,
-                              )
-                          ),
-                          Icon(Icons.arrow_right_alt)
-                        ],
-                      )
-                    )
                   ),
+                  )
                 ],
               )
             ),
           ],
-        ),
+        )
       ),
     );
   }
