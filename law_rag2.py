@@ -18,7 +18,7 @@ with open("jeonse_special_act.json", "r") as f:
 embeddings = np.loadtxt("law_embedding.txt", delimiter=" ")
 embeddings = embeddings / np.linalg.norm(embeddings, axis=1, keepdims=True)
 
-EMBEDDING_MODEL = "text-embedding-3-large"
+EMBEDDING_MODEL = "text-embedding-3-small"
 TOP_K = 5
 
 @app.get("/rag")
