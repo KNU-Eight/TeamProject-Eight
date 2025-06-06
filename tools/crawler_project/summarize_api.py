@@ -29,7 +29,7 @@ def generate_summary(content: str, max_tokens: int = 300) -> str:
 어려운 말은 쓰지 말고 쉽고 자연스럽게 알려줘. 반말은 하지마. 친절하고 어려운 부분엔 부연설명을 달아서 해줘\n\n{content}\n\n요약:"""
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=max_tokens,
             temperature=0.7,
