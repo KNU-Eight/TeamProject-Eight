@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "389061441770-7us69roiunphboompnt3e3a2fobdhgfg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team_eight.prevent_rental_fraud",
+            "certificate_hash": "3456f4864a024ed415810a158821337a36d33636"
+          }
+        },
+        {
           "client_id": "389061441770-dc9qod4cv6bm0gg8rklda3gro5jtc7g8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
