@@ -57,6 +57,7 @@ class _NewsContainerState extends State<NewsContainer> with SingleTickerProvider
 
   void _showModalBottomSheet(){
     showModalBottomSheet(
+      backgroundColor: Colors.white,
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
