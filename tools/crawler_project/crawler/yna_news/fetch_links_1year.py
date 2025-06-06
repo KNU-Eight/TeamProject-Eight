@@ -19,7 +19,7 @@ def fetch_links_1year(keywords=None, max_pages=100, output_path="data/urls_1year
     base_url = "https://www.yna.co.kr/search/index"
 
     today = datetime.today()
-    one_year_ago = today - timedelta(days=90)
+    one_year_ago = today - timedelta(days=365)
     to_date = today.strftime("%Y-%m-%d")
     from_date = one_year_ago.strftime("%Y-%m-%d")
 
@@ -74,7 +74,7 @@ def fetch_links_1year(keywords=None, max_pages=100, output_path="data/urls_1year
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(list(all_links), f, ensure_ascii=False, indent=2)
 
-    print(f" 3개월 치치 수집 완료: {len(links)}개 추가됨 (총 {len(all_links)}개)")
+    print(f" 1년치 수집 완료: {len(links)}개 추가됨 (총 {len(all_links)}개)")
 
 
 # 실행 테스트
