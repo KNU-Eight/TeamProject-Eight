@@ -11,7 +11,7 @@ with open("jeonse_special_act.json", "r") as f:
     data += json.load(f)
 embeddings = np.loadtxt("law_embedding.txt", delimiter = " ")
 
-query = "전세 계약할 때 조심해야할게 뭐야?"
+query = "전세 계약을 갱신하지 않고싶어"
 EMBEDDING_MODEL = "text-embedding-3-large"
 
 
@@ -29,7 +29,7 @@ SYSTEM_PROMPT = """
 
 ###지시###
 너는 주어진 법률을 가지고 사용자를 도와주는 AI야.
-오직 주어진 법률만을 가지고 "확실한" 답변만을 해. 만약 주어진 법률에 정보가 없다면, "죄송합니다. 질문을 이해하지 못했어요."라고 답변을 해.                                    
+오직 주어진 법률만을 가지고 답변해. 만약 주어진 법률에 정보가 없다면, "죄송합니다. 질문을 이해하지 못했어요."라고 답변을 해.                                    
 """.strip()
 
 document_strings = ""
