@@ -30,9 +30,9 @@ const _bnbItems = [
 class MainPageView extends StatefulWidget{
   const MainPageView({
     super.key,
-    required this.newsLinks
+    //required this.newsLinks
   });
-  final List<String> newsLinks;
+  //final List<String> newsLinks;
   @override
   createState() => _MainPageViewState();
 }
@@ -60,7 +60,7 @@ class _MainPageViewState extends State<MainPageView>{
 
   @override
   Widget build(BuildContext context) {
-    _pages = [HomePage(newsLinks: widget.newsLinks, onPageChange: changePage,), ChatbotPage(), MyInfoPage()];
+    _pages = [HomePage(onPageChange: changePage,), ChatbotPage(), MyInfoPage()];
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),    //스와이프로 화면이 이동하지 않도록 설정

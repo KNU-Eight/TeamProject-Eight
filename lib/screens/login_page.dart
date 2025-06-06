@@ -62,7 +62,7 @@ class _LoginState extends State<LoginPage> {
 
   void _navigateToMainPage() { // 메인 페이지로 이동하는 함수
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => SafeArea(child: MainPageView(newsLinks: widget.newsLinks)))
+        MaterialPageRoute(builder: (context) => SafeArea(child: MainPageView()))
     );
   }
 

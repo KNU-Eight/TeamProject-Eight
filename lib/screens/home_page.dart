@@ -7,10 +7,8 @@ import 'package:prevent_rental_fraud/widgets/news_list_builder.dart';
 class HomePage extends StatefulWidget {
   const HomePage({
     super.key,
-    required this.newsLinks,
     required this.onPageChange
   });
-  final List<String> newsLinks;
   final Function(int) onPageChange;
 
   @override
@@ -115,7 +113,6 @@ class _HomePageState extends State<HomePage>{
                 left: screenWidth * startPosition,
                 top: screenHeight * startPosition + 110,
                 child: NewsListBuilder(
-                  newsLinks: widget.newsLinks,
                 )
               ),
               Positioned(   //노란색 영역을 제외한 영역
