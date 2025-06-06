@@ -48,7 +48,6 @@ for i in range(0, len(data), CHUNK_SIZE):
         item["embedding"] = response.data[j]["embedding"]
 embeddings += [item["embedding"] for item in data]
 embeddings = np.array(embeddings) 
-print(embeddings)     
 np.savetxt("law_embedding.txt", embeddings, delimiter = " ")
     
 
