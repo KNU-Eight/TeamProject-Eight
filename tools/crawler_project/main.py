@@ -109,23 +109,29 @@ async def chat_with_llm(request: PromptRequest, http_request: Request):  # ← R
         if not context_chunks:
             raise HTTPException(status_code=404, detail="No relevant context found.")
 
-        # --- 2. 프롬프트 구성 ---
         context_text = "\n\n".join(f"- {chunk}" for chunk in context_chunks)
-        prompt_with_context = (
-            "다음은 전세사기 관련 참고 문단입니다. 반드시 이 문단만을 참고해서 답변해주세요."
-            "사용자의 질문에 대해 이 내용을 바탕으로 정확하고 친절하게 답변해주세요. 따뜻하고 친절한 말투로 해주세요. 해요체로 해주세요. 전세 임대에 대해 잘 모르는 사회초년생이라고 생각하고 답변을 해주세요. 어려운 용어에서는 쉽게 설명을 덧붙여 주세요.\n\n"
-            f"{context_text}\n\n"
-            f"질문: {request.prompt}"
-        )
-        print(context_text)
 
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                            "당신은 전세사기 및 임대 정책에 대해 신뢰성 있고 친절하게 설명하는 AI 비서입니다. "
+            "다음은 참고 문단입니다. 반드시 이 내용을 기반으로 해요체로 쉽게 설명해주세요.\n\n"
+            "사용자의 질문에 대해 이 내용을 바탕으로 정확하고 친절하게 답변해주세요. 이모티콘도 적절히 사용하면서 따뜻하고 친절한 말투로 해주세요. "
+            "전세 임대에 대해 잘 모르는 사회초년생이라고 생각하고 답변을 해주세요. 어려운 용어에서는 쉽게 설명을 덧붙여 주세요.\n\n"
+            f"{context_text}"
+                )
+            },
+            {
+                "role": "user",
+                "content": request.prompt
+            }
+        ]
+        
         # --- 3. LLM 호출 ---
         completion = client.chat.completions.create(
             model=OPENAI_MODEL,
-            messages=[
-                {"role": "system", "content": "당신은 전세사기에 대해 신뢰성 있고 간결하게 설명하는 비서입니다."},
-                {"role": "user", "content": prompt_with_context}
-            ]
+            messages=messages
         )
 
         llm_response_text = completion.choices[0].message.content
