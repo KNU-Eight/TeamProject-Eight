@@ -143,13 +143,6 @@ class _ChatbotPageState extends State<ChatbotPage>{
     }
   }
 
-  /*
-  void sendMessage(String message, bool isMe){
-    _bubbles.add(ChatBubble(isMe: isMe, text: message));
-    _streamController.add(_bubbles);
-  }
-  */
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;

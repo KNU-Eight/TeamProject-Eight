@@ -13,11 +13,6 @@ void main() async {
   Get.put(GlobalValueController());
   WidgetsFlutterBinding.ensureInitialized();
 
-  /*
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  */
   if (Firebase.apps.isEmpty) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -57,7 +52,7 @@ class MyApp extends StatelessWidget {
     } else if(snapshot.hasData) {
       // 사용자가 로그인되어 있다면 MainPageView로 이동
       if (snapshot.data is User) { // 사용자 객체인지 확인
-        return SafeArea(child: MainPageView(newsLinks: newsLinks)); // MainPageView로 이동
+        return SafeArea(child: MainPageView()); // MainPageView로 이동
       }
       return SafeArea(child: LoginPage(newsLinks: newsLinks)); // 로그인 페이지로 이동
     } else {
