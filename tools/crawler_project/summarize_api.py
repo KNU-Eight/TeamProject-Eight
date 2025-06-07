@@ -26,7 +26,7 @@ class SummaryOutput(BaseModel):
 # -------------------------
 def generate_summary(content: str, max_tokens: int = 300) -> str:
     prompt = f"""다음 뉴스 기사를 친구에게 설명하듯이 쉽게 요약해줘.
-어려운 말은 쓰지 말고 쉽고 자연스럽게 알려줘. 반말은 하지마. 친절하고 어려운 부분엔 부연설명을 달아서 해줘\n\n{content}\n\n요약:"""
+어려운 말은 쓰지 말고 쉽고 자연스럽게 알려줘. 반말은 하지마. 친절하고 어려운 단어는 한번 더 친절하게 설명해줘. 전세임대에 대해 모르는 사람도 이해하기기 쉽게 해줘. \n\n{content}\n\n요약:"""
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",

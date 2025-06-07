@@ -8,6 +8,8 @@ base_dir = os.path.abspath(os.path.dirname(__file__))
 paths = [
     os.path.join(base_dir, "data", "molit", "embedded_chunks.json"),
     os.path.join(base_dir, "data", "yna_news", "embedded_chunks.json"),
+    os.path.join(base_dir, "data", "laws","law_embedding_v2.json"),  
+
 ]
 
 combined_data = []
@@ -15,6 +17,7 @@ for path in paths:
     if os.path.exists(path):
         with open(path, encoding="utf-8") as f:
             combined_data.extend(json.load(f))
+            
     else:
         print(f"❗ 파일 없음: {path}")
 
