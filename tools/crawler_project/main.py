@@ -25,42 +25,27 @@ except Exception as e:
 
 OPENAI_MODEL = "gpt-4o-mini"
 
+base_dir = os.path.abspath(os.path.dirname(__file__))
+cache_dir = os.path.join(base_dir, "cache")
 # Lifespan 함수 정의
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Server startup: Loading search data and building FAISS index...")
+    print("🔄 Loading FAISS index and reference data...")
     try:
-        with open("search/embedded_chunks.json", "r", encoding="utf-8") as f:
-            search_data_list = json.load(f)
-        
-        texts = [item["text"] for item in search_data_list]
-        vectors = np.array([item["embedding"] for item in search_data_list]).astype("float32")
+        faiss_index = faiss.read_index(os.path.join(cache_dir, "faiss.index"))
+        with open(os.path.join(cache_dir, "combined_data.json"), encoding="utf-8") as f:
+            reference_data = json.load(f)
 
-        if vectors.size == 0:
-            print("Warning: No embeddings found in 'embedded_chunks.json'. Search will not work.")
-            app.state.faiss_index = None
-            app.state.search_data = []
-        else:
-            faiss.normalize_L2(vectors)
-            index_dim = vectors.shape[1]
-            index = faiss.IndexFlatIP(index_dim)
-            index.add(vectors)
-            
-            app.state.faiss_index = index # app.state에 저장
-            app.state.search_data = search_data_list # app.state에 저장
-            print(f"FAISS index with {index.ntotal} vectors is ready and stored in app.state.")
+        app.state.faiss_index = faiss_index
+        app.state.reference_data = reference_data
+        print(f"Loaded FAISS index ({faiss_index.ntotal} vectors) and reference data.")
 
-    except FileNotFoundError:
-        print("Warning: 'search/embedded_chunks.json' not found. The /search endpoint will not be available.")
-        app.state.faiss_index = None
-        app.state.search_data = []
     except Exception as e:
-        print(f"An error occurred during search data loading: {e}")
+        print(f" Failed to load search data: {e}")
         app.state.faiss_index = None
-        app.state.search_data = []
-    
-    yield
+        app.state.reference_data = []
 
+    yield
     print("Server shutdown: Cleaning up resources...")
 
 # FastAPI 앱 인스턴스 생성 시 lifespan 전달
@@ -114,37 +99,44 @@ async def chat_with_llm(request: PromptRequest):
         raise HTTPException(status_code=500, detail=f"An internal server error occurred: {e}")
 
 @app.post("/search")
-def search(req: SearchRequest, request: Request): # 엔드포인트에서 app.state에 접근하기 위해 Request 객체 주입
-    """
-    사용자의 쿼리를 임베딩하여 FAISS에서 유사한 문서를 찾는 엔드포인트
-    """
-    # app.state에서 faiss_index와 search_data를 가져옴
-    faiss_index_instance = request.app.state.faiss_index
-    search_data_list = request.app.state.search_data
+def search(req: SearchRequest, request: Request):
+    index = request.app.state.faiss_index
+    search_data_list = request.app.state.reference_data  
 
-    if faiss_index_instance is None or search_data_list is None:
-        raise HTTPException(status_code=503, detail="Search service is not available. Check server logs.")
+    if index is None or not search_data_list:
+        raise HTTPException(status_code=503, detail="Search index not available.")
 
-    print(f"Received query for /search: {req.query}")
-    
     query_vec = embed_texts([req.query])[0]
     query_vec = np.array([query_vec], dtype="float32")
     faiss.normalize_L2(query_vec)
 
-    distances, indices = faiss_index_instance.search(query_vec, req.top_k)
-    
+    max_search = min(100, index.ntotal)
+    search_k = req.top_k * 2
+    seen_texts = set()
     results = []
-    for i, dist in zip(indices[0], distances[0]):
-        if i != -1:
+
+    while search_k <= max_search:
+        distances, indices = index.search(query_vec, search_k)
+        results.clear()
+        seen_texts.clear()
+
+        for i, dist in zip(indices[0], distances[0]):
             item = search_data_list[i]
+            text = item["text"]
+            if text in seen_texts:
+                continue
             results.append({
-                "text": item["text"],
+                "text": text,
                 "title": item.get("title", ""),
                 "date": item.get("date", ""),
                 "similarity": round(float(dist), 4)
             })
-            
-    print(f"Found {len(results)} results for query.")
+            seen_texts.add(text)
+            if len(results) >= req.top_k:
+                return results
+
+        search_k *= 2
+
     return results
 
 
