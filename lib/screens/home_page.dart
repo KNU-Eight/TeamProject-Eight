@@ -460,7 +460,7 @@ class _HomePageState extends State<HomePage>{
                                               ]
                                             ),
                                             Obx(() => valueController.isPriceLoading.value    //깡통 전세 위험 매물을 보여줄 ListView
-                                            ? CircularProgressIndicator()
+                                            ? Expanded(child: Center(child: CircularProgressIndicator()))
                                             : Expanded(child: ListView.builder(
                                               itemCount: valueController.dangerObject.length,
                                               itemBuilder: (BuildContext context, int index) {
