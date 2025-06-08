@@ -36,6 +36,160 @@ class _HomePageState extends State<HomePage>{
     valueController.initSiDoList();
   }
 
+  void _showModalBottomSheet(){
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context) {
+        return SafeArea(
+          child: SizedBox(
+              height: valueController.screenHeight.value * 0.8,
+              width: valueController.screenWidth.value,
+              child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      height: 5,
+                      width: valueController.screenWidth.value * 0.4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
+                      child: Text(
+                        "전세 계약 주의 사항", // Display title in the modal
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "1. 매매가격 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 주택 시세와 보증금의 규모가 비슷한 ‘깡통주택’은 주택가격이 내려가면 보증금을 돌려받기 어려울 수 있습니다. 주택의 매매가격과 전세보증금을 비교해보고 보증금이 시세의 80%를 넘는다면 그 집은 피하는 게 좋습니다.\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            ),
+                            Text(
+                              "2. 등기부등본 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 소유주를 확인하고 소유권 외의 권리관계 확인하기\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            ),
+                            Text(
+                              "3. 임대인 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 눈앞에 있는 사람과, 계약서에 도장 찍는 임대인과 등기부등본에 적힌 주택의 소유자가 모두 동일 인물이 맞는지 확인하기\n"
+                              "• 임대인에게 법적인 '행위능력'이 있는지 확인하기\n"
+                              "• 만약, 주택의 소유자가 2명 이상이면 소유자 전원과 계약을 맺기를 추천합니다\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            ),
+                            Text(
+                              "4. 대리인 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 대리인과 계약을 체결하는 경우 위임장을 통해 대리인이 해당 주택의 임대차계약을 체결할 수 있는 권한을 정확히 위임받고 있는지 확인하기\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            ),
+                            Text(
+                              "5. 공인중개사 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 공인중개사 사무소가 정상적으로 영업 중인 곳이 맞는지 그리고 상대가 그곳의 공인중개사 또는 등록된 중개보조원이 맞는지 확인하기\n",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            ),
+                            Text(
+                              "6. 계약내용 확인하기",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              "• 목적물 주소 및 임차 면적 등이 등기부등본 및 건축물대장과 일치하는지 확인하기\n"
+                              "• 임대인, 임차인, 공인중개사의 인적사항이 신분증과 일치 여부 확인하기\n"
+                              "• 보증금 및 월세 지급 계좌 및 지급 시기 확인하기\n"
+                              "• 계약 체결일 확인하기\n"
+                              "• 기타 특약 사항 확인하기",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                height: 1.5,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]
+              )
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -96,18 +250,42 @@ class _HomePageState extends State<HomePage>{
               ),
               Positioned(
                 left: screenWidth * startPosition,
+                right: 10,
                 top: screenHeight * startPosition,
-                child: Text(
-                  '홈',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 36,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w600,
-                    height: 1,
-                  ),
-                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '홈',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 36,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
+                        height: 1,
+                      ),
+                    ),
+                    ActionChip(
+                      backgroundColor: const Color(0xFFFFDA62),
+                      side: BorderSide(
+                        color: const Color(0xFFFFDA62),
+                      ),
+                      elevation: 0.5,
+                      shadowColor: Colors.grey,
+                      label: Text(
+                          "전세 계약 주의 사항",
+                          style: TextStyle(
+                              color: Colors.black
+                          )
+                      ),
+                      avatar: Icon(Icons.check, color: Colors.green),
+                      onPressed: (){
+                        _showModalBottomSheet();
+                      },
+                    )
+                  ],
+                )
               ),
               Positioned(   //뉴스 컨테이너
                 left: screenWidth * startPosition,
@@ -282,7 +460,7 @@ class _HomePageState extends State<HomePage>{
                                               ]
                                             ),
                                             Obx(() => valueController.isPriceLoading.value    //깡통 전세 위험 매물을 보여줄 ListView
-                                            ? CircularProgressIndicator()
+                                            ? Expanded(child: Center(child: CircularProgressIndicator()))
                                             : Expanded(child: ListView.builder(
                                               itemCount: valueController.dangerObject.length,
                                               itemBuilder: (BuildContext context, int index) {
