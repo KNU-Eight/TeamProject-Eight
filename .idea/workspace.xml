@@ -10,15 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e0ef4f5-56ba-46ac-8f98-eb8abbafd410" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/widgets/news_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/home_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/login_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/login_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/screens/main_page_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/screens/main_page_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/news_container.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/news_container.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/widgets/news_list_builder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/widgets/news_list_builder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/crawler_project/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/crawler_project/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +33,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "JaeHoon9"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/KNU-Eight/TeamProject-Eight.git",
+    "accountId": "1fe09cc5-f6e6-4abd-a719-f987260ce237"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
 }</component>
@@ -52,13 +58,14 @@
     "Flutter.main.dart.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "ScreenRecorder.SavePath": "C:\\Users\\may01",
     "ScreenshotViewer.SavePath": "C:/Users/may01",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "Koo",
+    "git-widget-placeholder": "main",
     "io.flutter.reload.alreadyRun": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/may01",
@@ -66,6 +73,15 @@
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\may01\GitHub\TeamProject-Eight\tools\crawler_project\data" />
+      <recent name="C:\Users\may01\GitHub\TeamProject-Eight\assets\config" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\may01\GitHub\TeamProject-Eight\tools\crawler_project" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
       <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />

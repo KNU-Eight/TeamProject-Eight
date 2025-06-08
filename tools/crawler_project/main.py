@@ -1,16 +1,20 @@
 import os
 import json
 import numpy as np
+import pandas as pd
 import uvicorn
 import openai
 import faiss
+from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from crawler.molit.extractor.embedding_service import embed_texts
-from contextlib import asynccontextmanager # Lifespan을 위해 추가
+from contextlib import asynccontextmanager
+from typing import List
+from pathlib import Path
 
 # .env 파일에서 환경 변수 로드
 load_dotenv()
@@ -27,6 +31,10 @@ OPENAI_MODEL = "gpt-4o-mini"
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 cache_dir = os.path.join(base_dir, "cache")
+
+# --- 뉴스 요약을 위한 전역 변수 ---
+summarized_news: List['SummaryOutput'] = []
+
 # Lifespan 함수 정의
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -44,6 +52,24 @@ async def lifespan(app: FastAPI):
         print(f" Failed to load search data: {e}")
         app.state.faiss_index = None
         app.state.reference_data = []
+
+    # --- 뉴스 요약 로직을 lifespan에 포함 ---
+    print("🔄 Summarizing news articles...")
+    try:
+        base_dir = Path(__file__).resolve().parent  # summarize_api.py 위치
+        file_path = base_dir / "data" / "yna_news" / "full_articles_recent.json"
+        with Path(file_path).open("r", encoding="utf-8") as f:
+            articles = json.load(f)
+
+        global summarized_news
+        summarized_news = [
+            SummaryOutput(title=article["title"], summary=generate_summary(article["content"]), url=article["url"])
+            for article in articles
+        ]
+        print(f"Summarized {len(summarized_news)} news articles.")
+    except Exception as e:
+        print(f"[시작 중 오류] 기사 요약 실패: {e}")
+
 
     yield
     print("Server shutdown: Cleaning up resources...")
@@ -76,10 +102,29 @@ class LLMResponse(BaseModel):
 class SearchRequest(BaseModel):
     query: str
     top_k: int = 3
-    
-    
+
+class SummaryOutput(BaseModel):
+    title: str
+    summary: str
+    url: str
+
+# 뉴스 요약 함수
+def generate_summary(content: str, max_tokens: int = 300) -> str:
+    prompt = f"""다음 뉴스 기사를 친구에게 설명하듯이 쉽게 요약해줘.
+어려운 말은 쓰지 말고 쉽고 자연스럽게 알려줘. 반말은 하지마. 친절하고 어려운 부분엔 부연설명을 달아서 해줘\n\n{content}\n\n요약:"""
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+            temperature=0.7,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        raise RuntimeError(f"요약 실패: {e}")
+
 @app.post("/chat", response_model=LLMResponse)
-async def chat_with_llm(request: PromptRequest, http_request: Request):  # ← Request 객체 추가
+async def chat_with_llm(request: PromptRequest, http_request: Request):
     if client is None:
         raise HTTPException(status_code=500, detail="OpenAI client is not initialized.")
 
@@ -87,7 +132,7 @@ async def chat_with_llm(request: PromptRequest, http_request: Request):  # ← R
         print(f"Received prompt for /chat: {request.prompt}")
 
         # --- 1. FAISS 검색 로직 포함 ---
-        index = app.state.faiss_index 
+        index = app.state.faiss_index
         search_data_list = app.state.reference_data
 
         if index is None or not search_data_list:
@@ -127,7 +172,7 @@ async def chat_with_llm(request: PromptRequest, http_request: Request):  # ← R
                 "content": request.prompt
             }
         ]
-        
+
         # --- 3. LLM 호출 ---
         completion = client.chat.completions.create(
             model=OPENAI_MODEL,
@@ -144,47 +189,53 @@ async def chat_with_llm(request: PromptRequest, http_request: Request):  # ← R
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An internal server error occurred: {e}")
 
-# @app.post("/search")
-# def search(req: SearchRequest, request: Request):
-#     index = request.app.state.faiss_index
-#     search_data_list = request.app.state.reference_data  
+base_dir = Path(__file__).resolve().parent.parent
+bjd_code_path = base_dir.parent / 'assets' / 'config' / 'bjd_code.csv'
 
-#     if index is None or not search_data_list:
-#         raise HTTPException(status_code=503, detail="Search index not available.")
+@app.get("/sido_code")
+async def parse_sido_code():
+    try:
+        bjd_code_df = pd.read_csv(bjd_code_path)
+        bjd_code_df.columns = [
+            "code",
+            "bjd_name",
+            "is_abolition"
+        ]
 
-#     query_vec = embed_texts([req.query])[0]
-#     query_vec = np.array([query_vec], dtype="float32")
-#     faiss.normalize_L2(query_vec)
+        if bjd_code_df["code"][0] == "1100000000":
+            print("true")
+        bjd_code_df = bjd_code_df[bjd_code_df["is_abolition"] != "폐지"]
+        sido_df = bjd_code_df[bjd_code_df["code"].apply(lambda x: str(x)[2:] == '0' * (len(str(x)) - 2))]
+        sido_json = sido_df.to_json(orient="records")
+        sido_json = json.dumps(json.loads(sido_json), ensure_ascii=False)
+        print(sido_json)
+    except Exception as e:
+        print(f'법정동 코드 파싱 에러 {e}')
+    return Response(content=sido_json, media_type="application/json")
 
-#     max_search = min(100, index.ntotal)
-#     search_k = req.top_k * 2
-#     seen_texts = set()
-#     results = []
+@app.get("/sgg_code")
+async def parse_bjd_sgg_code(sido_code: int):
+    try:
+        bjd_code_df = pd.read_csv(bjd_code_path)
+        bjd_code_df.columns = [
+            "code",
+            "bjd_name",
+            "is_abolition"
+        ]
 
-#     while search_k <= max_search:
-#         distances, indices = index.search(query_vec, search_k)
-#         results.clear()
-#         seen_texts.clear()
+        bjd_code_df = bjd_code_df[bjd_code_df["is_abolition"] != "폐지"]
+        sgg_df = bjd_code_df[bjd_code_df["code"].apply(lambda x: str(x)[2:] != '0' * (len(str(x)) - 2) and str(x)[5:] == '0' * (len(str(x)) - 5) and str(x)[:2] == str(sido_code)[:2])]
+        sgg_json = sgg_df.to_json(orient="records")
+        sgg_json = json.dumps(json.loads(sgg_json), ensure_ascii=False)
+    except Exception as e:
+        print(f'법정동 코드 파싱 에러 {e}')
+    return Response(content=sgg_json, media_type="application/json")
 
-#         for i, dist in zip(indices[0], distances[0]):
-#             item = search_data_list[i]
-#             text = item["text"]
-#             if text in seen_texts:
-#                 continue
-#             results.append({
-#                 "text": text,
-#                 "title": item.get("title", ""),
-#                 "date": item.get("date", ""),
-#                 "similarity": round(float(dist), 4)
-#             })
-#             seen_texts.add(text)
-#             if len(results) >= req.top_k:
-#                 return results
-
-#         search_k *= 2
-
-#     return results
-
+@app.get("/news", response_model=List[SummaryOutput])
+async def get_summarized_news():
+    if not summarized_news:
+        raise HTTPException(status_code=500, detail="요약된 뉴스가 없습니다.")
+    return summarized_news
 
 if __name__ == "__main__":
     print("Starting FastAPI server with lifespan events...")

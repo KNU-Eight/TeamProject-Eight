@@ -40,7 +40,10 @@
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW"/>
-            <data android:mimeType="https"/>
+            <!-- <data android:mimeType="https"/> -->
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" android:host="yourdomain.com" />
         </intent>
     </queries>
 </manifest>
